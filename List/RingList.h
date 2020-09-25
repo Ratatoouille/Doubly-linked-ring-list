@@ -29,6 +29,8 @@ public:
 	int GetSize() { return size; }
 	//перегрузка оператора [] для обращения к элементам контейнера
 	T& operator[](const int index);
+	//вывод для дебага
+	void output_debug();
 
 private:
 
@@ -38,13 +40,14 @@ private:
 	{
 	public:
 		Node* pNext;
+		Node* pPrev;
 		T data;
 
-		Node(T data = T(), Node* pNext = nullptr)
+		Node(T data = T(), Node* pNext = nullptr, Node* pPrev = nullptr)
 		{
 			this->data = data;
 			this->pNext = pNext;
-			
+			this->pPrev = pPrev;
 		}
 
 	};
@@ -52,4 +55,5 @@ private:
 	//поля разммера и начала контейнера
 	int size;
 	Node<T>* head;
+	//Node<T> tail;
 };

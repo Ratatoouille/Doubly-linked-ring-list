@@ -8,31 +8,39 @@ int main()
 
 	RingList<int> lst;
 
-	lst.push_front(2);
-	lst.push_front(10);
+	lst.push_back(2);
+	lst.push_back(10);
+	lst.push_back(100);
+	lst.push_back(1000);
+
+	cout << "push back" << endl;
 
 	for (int i = 0; i < lst.GetSize(); i++)
 	{
 		cout << lst[i] << endl;
 	}
 
-	cout << "Вставка" << endl;
+	cout << "insert" << endl;
 
-	lst.insert(100, 1);
+	lst.insert(99, 2);
+
+	for (int i = 0; i < lst.GetSize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+
+	cout << "delete" << endl;
+
+	lst.removeAt(2);
 
 	for (int i = 0; i < lst.GetSize(); i++)
 	{
 		cout << lst[i] << endl;
 	}
 
-	cout << "Удаление" << endl;
+	cout << "clear list" << endl;
 
-	lst.pop_back();
-
-	for (int i = 0; i < lst.GetSize(); i++)
-	{
-		cout << lst[i] << endl;
-	}
+	lst.clear();
 
 	return 0;
 }

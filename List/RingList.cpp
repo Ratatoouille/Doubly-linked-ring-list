@@ -1,10 +1,13 @@
 #include "RingList.h"
+#include <iostream>
+using namespace std;
 
 template<typename T>
 RingList<T>::RingList()
 {
 	size = 0;
 	head = nullptr;
+	//tail = nullptr;
 }
 
 template<typename T>
@@ -16,6 +19,7 @@ RingList<T>::~RingList()
 template<typename T>
 void RingList<T>::push_back(T data)
 {
+
 	if (head == nullptr)
 	{
 		head = new Node<T>(data);
@@ -27,7 +31,7 @@ void RingList<T>::push_back(T data)
 		{
 			current = current->pNext;
 		}
-		current->pNext = new Node<T>(data);
+		current->pNext = new Node<T>(data, nullptr, current);
 	}
 
 	size++;
@@ -38,7 +42,15 @@ void RingList<T>::pop_front()
 {
 	Node<T>* temp = head;
 
-	head = head->pNext;
+	if (head->pNext != nullptr)
+	{
+		head = head->pNext;
+		head->pPrev = nullptr;
+	}
+	else
+	{
+		head = head->pNext;
+	}
 
 	delete temp;
 
@@ -63,7 +75,13 @@ void RingList<T>::insert(T data, int index)
 	{
 		auto previous = searchElement(index);
 
-		previous->pNext = new Node<T>(data, previous->pNext);
+		Node<T>* next = previous->pNext;
+		
+		Node<T>* new_node = new Node<T>(data, previous->pNext, previous);
+
+		previous->pNext = new_node;;
+
+		new_node->pNext->pPrev = new_node;
 
 		size++;
 	}
@@ -83,6 +101,8 @@ void RingList<T>::removeAt(int index)
 		Node<T>* toDelete = previous->pNext;
 
 		previous->pNext = toDelete->pNext;
+
+		toDelete->pNext->pPrev = previous;
 
 		delete toDelete;
 
@@ -132,5 +152,17 @@ T& RingList<T>::operator[](const int index)
 		}
 		current = current->pNext;
 		counter++;
+	}
+}
+
+template<typename T>
+void RingList<T>::output_debug()
+{
+	Node<T>* current = this->head;
+	cout << "Data: " << current->data << "\tPrev: " << current->pPrev << "\tCurrent: " << current << "\tNext: " << current->pNext << endl;
+	while (current->pNext != nullptr)
+	{
+		current = current->pNext;
+		cout << "Data: " << current->data << "\tPrev: " << current->pPrev << "\tCurrent: " << current << "\tNext: " << current->pNext << endl;
 	}
 }
