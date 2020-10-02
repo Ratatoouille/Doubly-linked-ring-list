@@ -19,8 +19,6 @@ public:
 	void insert(T data, int index);
 	//удаление элемента на позиции
 	void removeAt(int index);
-	//поиск элемента в контейнере по указанному индексу
-	auto searchElement(int index);
 	//удаление последнего элемента
 	void pop_back();
 	//очистка контенера
@@ -33,7 +31,10 @@ public:
 	void output_debug();
 
 private:
-
+	//проверка корректности индекса элемента
+	bool is_correct_index(int index);
+	//поиск элемента в контейнере по указанному индексу
+	auto searchElement(int index);
 	//класс узла контейнера принимающий любые типы
 	template<typename T>
 	class Node
@@ -55,5 +56,5 @@ private:
 	//поля разммера и начала контейнера
 	int size;
 	Node<T>* head;
-	//Node<T> tail;
+	Node<T>* tail;
 };

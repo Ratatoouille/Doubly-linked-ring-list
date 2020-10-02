@@ -7,7 +7,7 @@ RingList<T>::RingList()
 {
 	size = 0;
 	head = nullptr;
-	//tail = nullptr;
+	tail = nullptr;
 }
 
 template<typename T>
@@ -24,37 +24,60 @@ void RingList<T>::push_back(T data)
 	{
 		head = new Node<T>(data);
 	}
+	else if (head->pNext == nullptr)
+	{
+		head->pNext = new Node<T>(data, head, head);
+		this->tail = head->pNext;
+	}
 	else
 	{
 		Node<T>* current = this->head;
-		while (current->pNext != nullptr)
+		while (current->pNext != head)
 		{
 			current = current->pNext;
 		}
-		current->pNext = new Node<T>(data, nullptr, current);
+		current->pNext = new Node<T>(data, head, current);
+		this->tail = current->pNext;
+		this->head->pPrev = this->tail;
 	}
 
 	size++;
 }
 
+
 template<typename T>
 void RingList<T>::pop_front()
 {
-	Node<T>* temp = head;
 
-	if (head->pNext != nullptr)
+	if (head == nullptr)
 	{
-		head = head->pNext;
-		head->pPrev = nullptr;
+		cerr << "The list is empty" << endl;
+		return;
 	}
 	else
 	{
-		head = head->pNext;
+		Node<T>* temp = head;
+		if (head->pNext == this->tail)
+		{
+			head = head->pNext;
+			head->pNext = nullptr;
+			head->pPrev = nullptr;
+		}
+		else if (head->pNext != nullptr)
+		{
+			head = head->pNext;
+			head->pPrev = this->tail;
+			tail->pNext = head;
+		}
+		else
+		{
+			head = head->pNext;
+		}
+
+		delete temp;
+
+		size--;
 	}
-
-	delete temp;
-
-	size--;
 }
 
 template<typename T>
@@ -67,47 +90,61 @@ void RingList<T>::push_front(T data)
 template<typename T>
 void RingList<T>::insert(T data, int index)
 {
-	if (index == 0)
+
+	bool _is_correct_index = is_correct_index(index);
+
+	if (_is_correct_index)
 	{
-		push_front(data);
+		if (index == 0)
+		{
+			push_front(data);
+		}
+		else
+		{
+			auto previous = searchElement(index);
+
+			Node<T>* next = previous->pNext;
+
+			Node<T>* new_node = new Node<T>(data, previous->pNext, previous);
+
+			previous->pNext = new_node;;
+
+			new_node->pNext->pPrev = new_node;
+
+			size++;
+		}
 	}
-	else
-	{
-		auto previous = searchElement(index);
-
-		Node<T>* next = previous->pNext;
-		
-		Node<T>* new_node = new Node<T>(data, previous->pNext, previous);
-
-		previous->pNext = new_node;;
-
-		new_node->pNext->pPrev = new_node;
-
-		size++;
-	}
+	return;
 }
 
 template<typename T>
 void RingList<T>::removeAt(int index)
 {
-	if (index == 0)
+
+	bool _is_correct_index = is_correct_index(index);
+
+	if (_is_correct_index)
 	{
-		pop_front();
+		if (index == 0)
+		{
+			pop_front();
+		}
+		else
+		{
+			auto previous = searchElement(index);
+
+			Node<T>* toDelete = previous->pNext;
+
+			previous->pNext = toDelete->pNext;
+
+			toDelete->pNext->pPrev = previous;
+
+			delete toDelete;
+
+			size--;
+		}
 	}
-	else
-	{
-		auto previous = searchElement(index);
-
-		Node<T>* toDelete = previous->pNext;
-
-		previous->pNext = toDelete->pNext;
-
-		toDelete->pNext->pPrev = previous;
-
-		delete toDelete;
-
-		size--;
-	}
+	return;
 }
 
 template<typename T>
@@ -165,4 +202,15 @@ void RingList<T>::output_debug()
 		current = current->pNext;
 		cout << "Data: " << current->data << "\tPrev: " << current->pPrev << "\tCurrent: " << current << "\tNext: " << current->pNext << endl;
 	}
+}
+
+template<typename T>
+bool RingList<T>::is_correct_index(int index)
+{
+	if (index > this->GetSize())
+	{
+		cerr << "Invalid index" << endl;
+		return false;
+	}
+	return true;
 }
