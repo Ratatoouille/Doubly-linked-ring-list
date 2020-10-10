@@ -50,7 +50,6 @@ void RingList<T>::pop_front()
 		cerr << "The list is empty" << endl;
 		return;
 	}
-	//без head = nullptr при лишнем вызове pop_front возникает ошибка т.к. в head повяляется какое-то значение. это из-за того что по этому адресу осталось какое-то значение?
 	else if (this->GetSize() == 1)
 	{
 		delete head;
