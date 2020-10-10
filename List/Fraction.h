@@ -1,7 +1,7 @@
 #pragma once
 #include"INumber.h"
 
-//класс дробных чисел
+//класс дробных
 template<typename T>
 class Fraction : public INumber
 {

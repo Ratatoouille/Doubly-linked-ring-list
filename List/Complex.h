@@ -1,7 +1,7 @@
 #pragma once
 #include "Inumber.h"
 
-//класс комплекмных чисел
+//класс комплекмных
 template<typename T>
 class Complex : public INumber
 {
