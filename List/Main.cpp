@@ -1,5 +1,6 @@
 ﻿#include "RingList.cpp"
 #include <iostream>
+
 using namespace std;
 
 int main()
@@ -11,7 +12,7 @@ int main()
 	lst.pop_front();
 
 	lst.push_back(2);
-	lst.push_back(10);
+	lst.push_back(10);	
 	lst.push_back(100);
 	lst.push_back(1000);
 	
@@ -22,6 +23,21 @@ int main()
 		cout << lst[i] << endl;
 	}
 
+	
+	lst.pop_front();
+	lst.pop_front();
+	lst.pop_front();
+	lst.pop_front();
+	lst.pop_front();
+
+	cout << "pop front" << endl;
+
+	for (int i = 0; i < lst.GetSize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+
+	/*
 	cout << "insert" << endl;
 	lst.insert(99, 2);
 
@@ -46,6 +62,7 @@ int main()
 	lst.pop_front();
 	lst.pop_front();
 	lst.pop_front();
+	*/
 
 	cout << "clear list" << endl;
 	lst.clear();

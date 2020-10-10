@@ -27,8 +27,6 @@ public:
 	int GetSize() { return size; }
 	//перегрузка оператора [] для обращения к элементам контейнера
 	T& operator[](const int index);
-	//вывод для дебага
-	void output_debug();
 
 private:
 	//проверка корректности индекса элемента

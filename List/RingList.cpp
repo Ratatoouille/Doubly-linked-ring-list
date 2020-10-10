@@ -23,27 +23,23 @@ void RingList<T>::push_back(T data)
 	if (head == nullptr)
 	{
 		head = new Node<T>(data);
+		tail = head;
 	}
-	else if (head->pNext == nullptr)
+	//если 1 элемент в списке
+	else if (this->GetSize() == 1)
 	{
 		head->pNext = new Node<T>(data, head, head);
-		this->tail = head->pNext;
+		tail = head->pNext;
 	}
 	else
 	{
-		Node<T>* current = this->head;
-		while (current->pNext != head)
-		{
-			current = current->pNext;
-		}
-		current->pNext = new Node<T>(data, head, current);
-		this->tail = current->pNext;
-		this->head->pPrev = this->tail;
+		tail->pNext = new Node<T>(data, head, tail);
+		head->pPrev = tail->pNext;
+		tail = tail->pNext;
 	}
 
 	size++;
 }
-
 
 template<typename T>
 void RingList<T>::pop_front()
@@ -54,25 +50,20 @@ void RingList<T>::pop_front()
 		cerr << "The list is empty" << endl;
 		return;
 	}
+	//без head = nullptr при лишнем вызове pop_front возникает ошибка т.к. в head пов€л€етс€ какое-то значение. это из-за того что по этому адресу осталось какое-то значение?
+	else if (this->GetSize() == 1)
+	{
+		delete head;
+		head = nullptr;
+		tail = nullptr;
+		size--;
+	}
 	else
 	{
 		Node<T>* temp = head;
-		if (head->pNext == this->tail)
-		{
-			head = head->pNext;
-			head->pNext = nullptr;
-			head->pPrev = nullptr;
-		}
-		else if (head->pNext != nullptr)
-		{
-			head = head->pNext;
-			head->pPrev = this->tail;
-			tail->pNext = head;
-		}
-		else
-		{
-			head = head->pNext;
-		}
+		head = head->pNext;
+		head->pPrev = tail;
+		tail->pNext = head;
 
 		delete temp;
 
@@ -83,7 +74,7 @@ void RingList<T>::pop_front()
 template<typename T>
 void RingList<T>::push_front(T data)
 {
-	head = new Node<T>(data, head);
+	head = new Node<T>(data, head, tail);
 	size++;
 }
 
@@ -172,6 +163,8 @@ void RingList<T>::clear()
 	while (size)
 	{
 		pop_front();
+
+		cout << this->size << "\t";
 	}
 }
 
@@ -189,18 +182,6 @@ T& RingList<T>::operator[](const int index)
 		}
 		current = current->pNext;
 		counter++;
-	}
-}
-
-template<typename T>
-void RingList<T>::output_debug()
-{
-	Node<T>* current = this->head;
-	cout << "Data: " << current->data << "\tPrev: " << current->pPrev << "\tCurrent: " << current << "\tNext: " << current->pNext << endl;
-	while (current->pNext != nullptr)
-	{
-		current = current->pNext;
-		cout << "Data: " << current->data << "\tPrev: " << current->pPrev << "\tCurrent: " << current << "\tNext: " << current->pNext << endl;
 	}
 }
 

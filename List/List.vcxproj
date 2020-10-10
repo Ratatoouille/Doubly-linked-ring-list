@@ -139,10 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="List.cpp" />
+    <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="Fraction.cpp" />
+    <ClCompile Include="INumber.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="RingList.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Complex.h" />
+    <ClInclude Include="Fraction.h" />
+    <ClInclude Include="INumber.h" />
     <ClInclude Include="RingList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
